@@ -1,4 +1,4 @@
-/* Licensed under GPlv3 /*
+/* Licensed under GPlv3 */
 ENTRY(_start)
 
 SECTIONS
