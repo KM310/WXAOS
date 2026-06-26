@@ -1,24 +1,46 @@
-/* Licensed Under GPLv3 Copyright 2026 PhoronMC */
+/* Licensed under GPlv3 /*
+ENTRY(_start)
 
-SECTIONS {
-    . = 0x00000000;
+SECTIONS
+{
+    . = 0x0000000000000000;
 
-    .text : {
-        _start = .;
-        *(.text.start)
-        *(.text*)
+    .code.start : {
+        *(.code.start)
     }
 
-    .bss : {
-        _bss_start = .;
-        *(.bss*)
+    .exception_vectors : ALIGN(0x1000) {
+        *(.exception_vectors)
+    }
+
+    .code : ALIGN(0x1000) {
+        *(.code)
+        *(.code.*)
+    }
+
+    .rodata : ALIGN(0x1000) {
+        *(.rodata)
+        *(.rodata.*)
+    }
+
+    .data : ALIGN(0x1000) {
+        *(.data)
+        *(.data.*)
+    }
+
+    _bss_start = .;
+    .bss : ALIGN(0x1000) {
+        *(.bss)
+        *(.bss.*)
         *(COMMON)
-        _bss_end = .;
+    }
+    _bss_end = .;
+
+    .pgtable ALIGN(0x1000) : {
+        __pgd_base = .;
+        *(.pgtable)
     }
 
-    .stack (NOLOAD) : {
-        _stack_bottom = .;
-        . = . + 0x4000; /* 16 KiB Stack */
-        _stack_top = .;
-    }
+    . = ALIGN(0x1000);
+    _stack_top = . + 0x40000;
 }
